@@ -8,15 +8,16 @@ def get_dominant_color_info(
     if threshold < 1:
         raise ValueError("threshold must be positive")
 
-    image = image.flatten()
+    image = image.ravel()
+    counts = np.zeros(256, dtype=np.int64)
 
-    colors = np.arange(256, dtype=np.int32)
-    counts = (image[:, np.newaxis] == colors).sum(axis=0)
+    for color in range(256):
+        counts[color] = np.sum(image == color)
 
     cnt_colors = np.zeros(257, dtype=np.int64)
     cnt_colors[1:] = np.cumsum(counts)
 
-    max_sum, color_for_ans = -1, 0
+    max_sum, color_for_ans = -1.0, 0
 
     for curr_color in range(256):
         if counts[curr_color] == 0:
@@ -25,10 +26,10 @@ def get_dominant_color_info(
         left = max(0, curr_color - threshold + 1)
         right = min(255, curr_color + threshold - 1)
 
-        curr_sum = int(cnt_colors[right + 1] - cnt_colors[left])
+        curr_sum = float(cnt_colors[right + 1] - cnt_colors[left])
 
         if curr_sum > max_sum:
             max_sum = curr_sum
             color_for_ans = curr_color
 
-    return np.uint8(color_for_ans), max_sum / image.size
+    return np.uint8(color_for_ans), (max_sum / image.size) * 100
