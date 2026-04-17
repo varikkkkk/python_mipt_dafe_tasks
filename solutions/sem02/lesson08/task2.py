@@ -70,9 +70,24 @@ def animate_wave_algorithm(maze, start, end, save_path=""):
 
 
 if __name__ == "__main__":
+    maze_small = np.array(
+        [
+            [0, 0, 0, 0, 0, 0, 0],
+            [0, 1, 1, 1, 1, 1, 0],
+            [1, 1, 0, 1, 0, 1, 0],
+            [0, 0, 1, 1, 0, 1, 0],
+            [0, 0, 0, 0, 0, 1, 0],
+            [1, 1, 1, 1, 1, 1, 0],
+            [0, 0, 0, 0, 0, 0, 0],
+        ]
+    )
+
+    animate_wave_algorithm(maze_small, start=(2, 0), end=(5, 0), save_path="labyrinth.gif")
+
     loaded_maze = np.load(
         "/Users/varvara/Developer/python_mipt_dafe_tasks/solutions/sem02/lesson08/data/maze.npy"
     )
+    print("Размер загруженного лабиринта:", loaded_maze.shape)
 
     animate_wave_algorithm(
         loaded_maze, start=(18, 1), end=(37, 21), save_path="loaded_labyrinth.gif"
